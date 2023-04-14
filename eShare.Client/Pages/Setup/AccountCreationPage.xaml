@@ -1,0 +1,55 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.Setup.AccountCreationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel
+        Spacing="128"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center">
+
+        <StackPanel Spacing="16">
+            <!-- Header -->
+            <TextBlock
+                FontSize="24"
+                FontWeight="Bold"
+                Text="Create account"
+                TextAlignment="Center" />
+
+            <!-- Body -->
+            <TextBlock
+                MaxWidth="512"
+                Foreground="Gray"
+                TextAlignment="Center"
+                TextWrapping="WrapWholeWords"
+                Text="Let's create your eShare account! Please enter your name to get started." />
+        </StackPanel>
+
+        <!-- Account name -->
+        <TextBox
+                Width="256"
+                MaxLength="24"
+                x:Name="AccountName"
+                PlaceholderText="Name"
+                IsSpellCheckEnabled="False"
+                HorizontalAlignment="Center"
+                TextChanging="AccountName_TextChanging" />
+
+        <!-- Continue button -->
+        <Button
+            IsEnabled="False"
+            Content="Continue"
+            x:Name="ContinueButton"
+            Click="ContinueButton_Click"
+            HorizontalAlignment="Center"
+            Style="{StaticResource AccentButtonStyle}" />
+    </StackPanel>
+</Page>

@@ -1,0 +1,260 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.AccountPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:helpers="using:eShare.Client.Helpers"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!-- Spacing between cards -->
+        <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+
+        <!-- Section header style -->
+        <Style
+            TargetType="TextBlock"
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}">
+
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,29,0,5" />
+            </Style.Setters>
+        </Style>
+
+        <!-- Profile picture template -->
+        <DataTemplate x:Key="ProfilePictureTemplate" x:DataType="helpers:ProfilePicture">
+            <Image Stretch="UniformToFill" Source="{x:Bind PictureLocation}" Width="86" Height="86" />
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock
+            Text="Account"
+            Margin="36,24,36,0"
+            Style="{StaticResource TitleTextBlockStyle}" />
+
+        <ScrollViewer
+            Grid.Row="1"
+            Padding="36,0,36,18">
+
+            <StackPanel Spacing="{StaticResource SettingsCardSpacing}">
+                <!-- Profile -->
+                <StackPanel
+                    Margin="0,24,0,0"
+                    Orientation="Horizontal">
+
+                    <!-- Profile picture -->
+                    <PersonPicture
+                        x:Name="Profile"
+                        HorizontalAlignment="Left" />
+
+                    <!-- Profile name -->
+                    <TextBlock
+                        FontSize="18"
+                        Margin="24,0,0,0"
+                        x:Name="ProfileName"
+                        FontWeight="SemiBold"
+                        VerticalAlignment="Center" />
+                </StackPanel>
+
+                <!-- Account settings -->
+                <TextBlock
+                    Text="Account settings"
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+
+                <!-- Profile picture -->
+                <Expander
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left">
+
+                    <Expander.Header>
+                        <StackPanel
+                            Padding="2,16,0,16"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+
+                            <FontIcon Glyph="&#xE91B;" />
+
+                            <StackPanel Margin="20,0,0,0">
+                                <TextBlock Text="Profile picture" />
+                                <TextBlock
+                                    FontSize="12"
+                                    Text="Change your account profile picture"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Expander.Header>
+
+                    <GridView
+                        Padding="8,10,4,4"
+                        x:Name="ProfilePictures"
+                        IsItemClickEnabled="True"
+                        HorizontalContentAlignment="Left"
+                        ItemClick="ProfilePictures_ItemClick"
+                        ItemTemplate="{StaticResource ProfilePictureTemplate}">
+                    </GridView>
+                </Expander>
+
+                <!-- Name -->
+                <labs:SettingsCard
+                    Header="Name"
+                    Description="Rename your account">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE779;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <StackPanel
+                        Orientation="Horizontal">
+
+                        <!-- Account name -->
+                        <TextBox
+                            MaxLength="24"
+                            IsEnabled="False"
+                            x:Name="AccountName"
+                            PlaceholderText="Name"
+                            IsSpellCheckEnabled="False"
+                            TextChanging="AccountName_TextChanging" />
+
+                        <!-- Rename button -->
+                        <Button
+                            x:Name="Rename"
+                            Margin="3,0,0,0"
+                            Click="RenameButton_Click"
+                            ToolTipService.ToolTip="Rename your account">
+
+                            <SymbolIcon Symbol="Rename" />
+                        </Button>
+
+                        <!-- Rename accept button -->
+                        <Button
+                            Tag="Accept"
+                            x:Name="Accept"
+                            Margin="3,0,0,0"
+                            Visibility="Collapsed"
+                            Click="RenameConfirmButton_Click"
+                            ToolTipService.ToolTip="Save changes">
+
+                            <SymbolIcon Symbol="Accept" />
+                        </Button>
+
+                        <!-- Rename cancel button -->
+                        <Button
+                            Tag="Cancel"
+                            x:Name="Cancel"
+                            Margin="3,0,0,0"
+                            Visibility="Collapsed"
+                            Click="RenameConfirmButton_Click"
+                            ToolTipService.ToolTip="Discard changes"
+                            Style="{StaticResource AccentButtonStyle}">
+
+                            <SymbolIcon Symbol="Cancel" />
+                        </Button>
+                    </StackPanel>
+                </labs:SettingsCard>
+
+                <!-- Guid -->
+                <labs:SettingsCard
+                    Header="Guid"
+                    Description="Share your account">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE8D7;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <StackPanel
+                        Spacing="{StaticResource SettingsCardSpacing}"
+                        Orientation="Horizontal">
+
+                        <!-- Account guid -->
+                        <TextBox
+                            x:Name="AccountGuid"
+                            IsEnabled="False"/>
+
+                        <!-- Guid copy button -->
+                        <Button
+                            Click="AccountGuidButton_Click"
+                            ToolTipService.ToolTip="Copy guid to clipboard">
+
+                            <SymbolIcon Symbol="Copy" />
+                        </Button>
+                    </StackPanel>
+                </labs:SettingsCard>
+
+                <!-- Privacy -->
+                <TextBlock
+                    Text="Privacy"
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+
+                <!-- Incoming requests -->
+                <labs:SettingsCard
+                    Header="Incoming requests"
+                    Description="Allow incoming friend requests">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xEA18;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch
+                        x:Name="IncomingRequests"
+                        Toggled="IncomingRequests_Toggled" />
+                </labs:SettingsCard>
+
+                <!-- Related settings -->
+                <TextBlock
+                    Text="Related settings"
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+
+                <!-- Delete account -->
+                <labs:SettingsCard
+                    Header="Delete account"
+                    Description="Permanently erase all of your data and delete your account">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE74D;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <!-- Delete button -->
+                    <Button
+                        Content="Delete" 
+                        Style="{StaticResource AccentButtonStyle}">
+
+                        <Button.Flyout>
+                            <Flyout Placement="Left">
+                                <StackPanel>
+                                    <TextBlock
+                                        Width="348"
+                                        Margin="0,0,0,12"
+                                        TextAlignment="Justify"
+                                        TextWrapping="WrapWholeWords"
+                                        Style="{ThemeResource BaseTextBlockStyle}"
+                                        Text="Are you sure you want to delete your account? This action cannot be undone. Please note that deleting your account will permanently erase all of your data. This includes your saved preferences, settings, and any other information associated with your account." />
+
+                                    <Button
+                                        Content="Delete account"
+                                        Click="DeleteButton_Click"
+                                        HorizontalAlignment="Center"
+                                        Style="{StaticResource AccentButtonStyle}" />
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </labs:SettingsCard>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

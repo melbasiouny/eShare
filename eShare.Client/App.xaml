@@ -1,0 +1,19 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Application
+    x:Class="eShare.Client.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
+            <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

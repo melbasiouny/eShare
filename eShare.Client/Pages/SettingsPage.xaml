@@ -1,0 +1,121 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!-- Spacing between cards -->
+        <x:Double x:Key="SettingsCardSpacing">3</x:Double>
+
+        <!-- Section header style -->
+        <Style
+            TargetType="TextBlock"
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}">
+
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,29,0,5" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock
+            Text="Settings"
+            Margin="36,24,36,0"
+            Style="{StaticResource TitleTextBlockStyle}" />
+
+        <ScrollViewer
+            Grid.Row="1"
+            Padding="36,0,36,18">
+
+            <StackPanel Spacing="{StaticResource SettingsCardSpacing}">
+                <!-- Appearance & behavior -->
+                <TextBlock
+                    Text="Appearance &amp; behavior"
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+
+                <!-- App theme -->
+                <labs:SettingsCard
+                    Header="App theme"
+                    Description="Select which app theme to display">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xE790;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <ComboBox
+                        x:Name="AppTheme"
+                        SelectionChanged="AppTheme_SelectionChanged">
+
+                        <ComboBoxItem Content="Light" Tag="Light" />
+                        <ComboBoxItem Content="Dark" Tag="Dark" />
+                        <ComboBoxItem Content="System default" />
+                    </ComboBox>
+                </labs:SettingsCard>
+
+                <!-- Sound -->
+                <labs:SettingsCard
+                    Header="Sound"
+                    Description="Controls provide audible feedback">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xEC4F;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch
+                        x:Name="Sound"
+                        Toggled="Sound_Toggled" />
+                </labs:SettingsCard>
+
+                <!-- Notifications -->
+                <labs:SettingsCard
+                    Header="Notifications"
+                    Description="Enable messages push notifications">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xEA8F;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <ToggleSwitch
+                        x:Name="Notifications"
+                        Toggled="Notifications_Toggled" />
+                </labs:SettingsCard>
+
+                <!-- About -->
+                <TextBlock
+                    Text="About"
+                    Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" />
+
+                <!-- eShare -->
+                <labs:SettingsCard
+                    Header="eShare"
+                    Description="Unlimited file transfer and messaging">
+
+                    <labs:SettingsCard.HeaderIcon>
+                        <FontIcon Glyph="&#xECAA;" />
+                    </labs:SettingsCard.HeaderIcon>
+
+                    <TextBlock>
+                        <Run Text="{x:Bind Version}" />
+                    </TextBlock>
+                </labs:SettingsCard>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

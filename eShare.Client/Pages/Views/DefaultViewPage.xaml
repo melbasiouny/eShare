@@ -1,0 +1,34 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.Views.DefaultViewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <!-- Default view -->
+        <StackPanel
+                x:Name="DefaultView"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+
+            <FontIcon
+                    FontSize="36"
+                    Glyph="&#xF0CE;" />
+
+            <TextBlock
+                    Padding="32"
+                    FontSize="16"
+                    TextWrapping="Wrap"
+                    FontWeight="SemiBold"
+                    TextAlignment="Center"
+                    Text="It feels a bit lonely in here, but you can choose to chat with your current friends or add new ones to start a conversation." />
+        </StackPanel>
+    </Grid>
+</Page>

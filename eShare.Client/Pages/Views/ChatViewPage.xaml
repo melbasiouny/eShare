@@ -1,0 +1,315 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.Views.ChatViewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:eShare.Client.Helpers"
+    xmlns:local="using:eShare.Client.Pages.Views"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!-- GIF view template -->
+        <DataTemplate
+            x:Key="GIFViewTemplate"
+            x:DataType="helpers:GIF">
+
+            <Grid
+                Height="Auto"
+                Margin="0,0,0,4"
+                HorizontalAlignment="{x:Bind HorizontalAlignment}">
+
+                <StackPanel
+                    Padding="8"
+                    CornerRadius="6"
+                    Margin="{x:Bind Thickness}"
+                    RightTapped="ChatItem_RightTapped"
+                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondary}">
+
+                    <Image
+                        MinWidth="128"
+                        MaxWidth="512"
+                        MinHeight="128"
+                        MaxHeight="512"
+                        Stretch="Uniform"
+                        Source="{x:Bind GIFSource}" />
+
+                    <TextBlock
+                        FontSize="12"
+                        Margin="0,8,0,0"
+                        TextWrapping="Wrap"
+                        Text="{x:Bind Timestamp}"
+                        HorizontalAlignment="{x:Bind HorizontalAlignment}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        
+        <!-- Message view template -->
+        <DataTemplate
+            x:Key="MessageViewTemplate"
+            x:DataType="helpers:Message">
+
+            <Grid
+                Height="Auto"
+                Margin="0,0,0,4"
+                HorizontalAlignment="{x:Bind HorizontalAlignment}">
+
+                <StackPanel
+                    Padding="8"
+                    CornerRadius="6"
+                    Margin="{x:Bind Thickness}"
+                    RightTapped="ChatItem_RightTapped"
+                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondary}">
+
+                    <TextBlock
+                        TextWrapping="Wrap"
+                        Text="{x:Bind Text}" />
+
+                    <TextBlock
+                        FontSize="12"
+                        Margin="0,4,0,0"
+                        TextWrapping="Wrap"
+                        Text="{x:Bind Timestamp}"
+                        HorizontalAlignment="{x:Bind HorizontalAlignment}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <!-- Attachment view template -->
+        <DataTemplate
+            x:Key="AttachmentViewTemplate"
+            x:DataType="helpers:Attachment">
+
+            <Grid
+                Height="Auto"
+                Margin="0,0,0,4"
+                HorizontalAlignment="{x:Bind HorizontalAlignment}">
+
+                <StackPanel
+                    Padding="8"
+                    CornerRadius="6"
+                    Margin="{x:Bind Thickness}"
+                    RightTapped="ChatItem_RightTapped"
+                    Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondary}">
+
+                    <ProgressBar
+                        Height="18"
+                        Margin="0,-6,0,0"
+                        Value="{x:Bind Progress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{x:Bind ProgressVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    
+                    <StackPanel
+                        Spacing="6"
+                        Orientation="Horizontal">
+
+                        <FontIcon
+                            FontSize="28"
+                            Glyph="&#xE723;" />
+
+                        <StackPanel>
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                FontWeight="SemiBold"
+                                Text="{x:Bind FileName}" />
+
+                            <TextBlock
+                                FontSize="12"
+                                TextWrapping="Wrap"
+                                Text="{x:Bind FileSize}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock
+                        FontSize="12"
+                        Margin="0,4,0,0"
+                        TextWrapping="Wrap"
+                        Text="{x:Bind Timestamp}"
+                        HorizontalAlignment="{x:Bind HorizontalAlignment}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Chat box -->
+        <ListView
+            Grid.Row="1"
+            x:Name="ChatBox"
+            SelectionMode="None"
+            Padding="-12,0,-12,0">
+
+            <ListView.ItemTemplateSelector>
+                <local:ChatTemplateSelector
+                    GIFTemplate="{StaticResource GIFViewTemplate}"
+                    MessageTemplate="{StaticResource MessageViewTemplate}"
+                    AttachmentTemplate="{StaticResource AttachmentViewTemplate}" />
+            </ListView.ItemTemplateSelector>
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsStackPanel
+                        VerticalAlignment="Bottom"
+                        ItemsUpdatingScrollMode="KeepLastItemInView">
+                    </ItemsStackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <!-- Message flyout -->
+            <MenuFlyout
+                Placement="Bottom"
+                x:Name="MessageFlyout">
+
+                <MenuFlyoutItem
+                    Text="Copy"
+                    Click="CopyMessageButton_Click">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8C8;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="C" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem
+                    x:Name="OpenLink"
+                    Click="OpenLink_Click"
+                    Text="Open link">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE71B;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="O" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem
+                    Text="Add friend"
+                    x:Name="AddFriend"
+                    Click="AddFriendButton_Click">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8FA;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="A" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+
+            <!-- Attachment flyout -->
+            <MenuFlyout
+                Placement="Bottom"
+                x:Name="AttachmentFlyout">
+
+                <MenuFlyoutItem
+                    Text="Open"
+                    x:Name="OpenAttachment"
+                    Click="OpenAttachmentButton_Click">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8A7;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="O" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem
+                    Text="Download"
+                    x:Name="DownloadAttachment"
+                    Click="DownloadAttachmentButton_Click">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE896;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="D" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+
+                <MenuFlyoutItem
+                    Text="Open containing folder"
+                    x:Name="OpenAttachmentFolder"
+                    Click="OpenAttachmentFolderButton_Click">
+
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE8DA;" />
+                    </MenuFlyoutItem.Icon>
+                    <MenuFlyoutItem.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control" Key="F" />
+                    </MenuFlyoutItem.KeyboardAccelerators>
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </ListView>
+
+        <RelativePanel Grid.Row="2">
+            <!-- Attach button -->
+            <Button
+                x:Name="AttachButton"
+                Click="AttachButton_Click"
+                ToolTipService.ToolTip="Attach a file"
+                RelativePanel.AlignLeftWithPanel="True">
+
+                <StackPanel>
+                    <FontIcon Glyph="&#xE723;" />
+                </StackPanel>
+            </Button>
+
+            <!-- Message box -->
+            <TextBox
+                MaxLength="2048"
+                Margin="4,0,4,0"
+                x:Name="MessageBox"
+                TextWrapping="Wrap"
+                IsSpellCheckEnabled="True"
+                PlaceholderText="Type a message"
+                RelativePanel.LeftOf="SendButton"
+                RelativePanel.RightOf="AttachButton"
+                TextChanging="MessageBox_TextChanging" />
+
+            <!-- Send button -->
+            <Button
+                IsEnabled="False"
+                x:Name="SendButton"
+                Click="SendButton_Click"
+                ToolTipService.ToolTip="Send message"
+                RelativePanel.AlignRightWithPanel="True"
+                Style="{StaticResource AccentButtonStyle}">
+
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Enter" />
+                </Button.KeyboardAccelerators>
+
+                <StackPanel
+                    Spacing="8"
+                    Orientation="Horizontal">
+
+                    <FontIcon Glyph="&#xE724;" />
+                    <TextBlock Text="Send" />
+                </StackPanel>
+            </Button>
+        </RelativePanel>
+    </Grid>
+</Page>

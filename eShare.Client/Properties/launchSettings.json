@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "eShare.Client (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "eShare.Client (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

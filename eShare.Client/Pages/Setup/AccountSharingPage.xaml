@@ -1,0 +1,64 @@
+<!-- Copyright (c) 2023 Mostafa Elbasiouny -->
+
+<!-- This software may be modified and distributed under the terms of the MIT license. -->
+<!-- See the LICENSE file for details. -->
+
+<Page
+    x:Class="eShare.Client.Pages.Setup.AccountSharingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel
+        Spacing="128"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center">
+
+        <StackPanel Spacing="16">
+            <!-- Header -->
+            <TextBlock
+                FontSize="24"
+                x:Name="Header"
+                FontWeight="Bold"
+                TextAlignment="Center" />
+
+            <!-- Body -->
+            <TextBlock
+                MaxWidth="512"
+                Foreground="Gray"
+                TextAlignment="Center"
+                TextWrapping="WrapWholeWords"
+                Text="Congratulations, you're almost ready to start using eShare! Before you get started, we recommend that you copy your guid and share it with your friends." />
+        </StackPanel>
+
+        <StackPanel
+            Spacing="3"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center">
+
+            <!-- Account guid -->
+            <TextBox
+                IsEnabled="False"
+                x:Name="AccountGuid"
+                IsSpellCheckEnabled="False"
+                HorizontalAlignment="Center" />
+
+            <!-- Copy guid button -->
+            <Button
+                Click="GuidCopyButton_Click"
+                ToolTipService.ToolTip="Copy guid to clipboard">
+
+                <FontIcon Glyph="&#xE8C8;" />
+            </Button>
+        </StackPanel>
+
+        <!-- Get started button -->
+        <Button
+            Content="Get started"
+            HorizontalAlignment="Center"
+            Click="GetStartedButton_Click"
+            Style="{StaticResource AccentButtonStyle}" />
+    </StackPanel>
+</Page>
